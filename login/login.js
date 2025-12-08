@@ -50,11 +50,10 @@ async function handleLoginSubmit(event) {
     const username = document.getElementById("username").value.trim();
     const password = document.getElementById("password").value.trim();
     const messageElement = document.getElementById("message");
+    const isAdminMode = document.querySelector(".login-box").classList.contains("admin-mode");
 
     messageElement.textContent = "";
     messageElement.style.color = "red";
-
-    const isAdminMode = document.querySelector(".login-box").classList.contains("admin-mode");
 
     // ===============================
     // ADMIN LOGIN CHECK
@@ -74,10 +73,12 @@ async function handleLoginSubmit(event) {
     // PARTICIPANT LOGIN (FIRESTORE)
     // ===============================
 
-    const userRef = db.collection("participants").doc(username);
+    // convert "Hilman Nur" → "hilman_nur"
+    const docId = username.toLowerCase().replace(/ /g, "_");
+    const participantDocRef = db.collection("participants").doc(docId);
 
     try {
-        const docSnap = await userRef.get();
+        const docSnap = await participantDocRef.get();
 
         if (!docSnap.exists) {
             messageElement.textContent = "User not found!";
@@ -98,11 +99,12 @@ async function handleLoginSubmit(event) {
             return;
         }
 
-        // UPDATE LOGIN ATTEMPTS
-        await userRef.set({
+        // ========== FIX: BUG DI SINI ==========
+        await participantDocRef.set({
             login_attempts: currentAttempts + 1,
             last_login: firebase.firestore.FieldValue.serverTimestamp()
         }, { merge: true });
+        // =======================================
 
         // SUCCESS
         messageElement.style.color = "green";
