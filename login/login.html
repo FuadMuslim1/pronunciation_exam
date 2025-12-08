@@ -1,27 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Examination - Login</title>
     <link rel="stylesheet" href="login.css">
+
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+    <!-- Firebase Config (File Terpisah) -->
+    <script src="../firebase-config.js"></script>
+
 </head>
+
 <body>
 
     <div class="login-box">
-        <h1>The Examination</h1>
-        <h2>Participant Login</h2>
 
-        <form id="login-form">
+        <h1>The Examination</h1>
+        <h2 id="login-title">Participant Login</h2>
+
+        <!-- FORM LOGIN -->
+        <form id="login-form" autocomplete="off" onsubmit="handleLoginSubmit(event)">
+
+            <!-- FULL NAME -->
             <div class="input-group">
                 <label for="username">Full Name</label>
-                <input type="text" id="username" name="username" placeholder="Enter your full name" required>
+                <input 
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Enter your full name"
+                    autocomplete="off"
+                    required
+                >
             </div>
 
+            <!-- PASSWORD -->
             <div class="input-group password-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter your secret password" required>
+                <input 
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    autocomplete="off"
+                    required
+                >
                 <span class="password-toggle" onclick="togglePasswordVisibility()">
                     <i class="fas fa-eye" id="toggleIcon"></i>
                 </span>
@@ -30,29 +61,18 @@
             <button type="submit" class="login-button">Log In</button>
         </form>
 
-        <div class="credentials-example">
-            <h3>Participant Credentials Example:</h3>
-            <table>
-                <tr>
-                    <td>Full Name</td>
-                    <td>: **Fajar Sadboy**</td>
-                </tr>
-                <tr>
-                    <td>Password</td>
-                    <td>: **Sumbawa, May 31, 2007**</td>
-                </tr>
-            </table>
-        </div>
-        
+        <p id="message"></p>
+
         <div class="login-container">
-            <a href="admin_login.html" class="mode-link-bottom"> 
+            <a href="#" onclick="handleAdminToggle()" id="admin-toggle" class="mode-link-bottom">
                 Switch to Admin Login
             </a>
         </div>
 
-        <p id="message"></p>
     </div>
-    
+
+    <!-- LOGIC -->
     <script src="login.js"></script>
+
 </body>
 </html>

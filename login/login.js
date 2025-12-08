@@ -1,125 +1,119 @@
-// Credential Data (Stored here as a simple example, not a production best practice)
+// ===================================
+// HARD-CODED CREDENTIALS (ADMIN ONLY)
+// ===================================
 const CREDENTIALS = {
-    PARTICIPANT_USER: "Fajar Sadboy",
-    PARTICIPANT_PASS: "Sumbawa, May 31, 2007",
     ADMIN_USER: "Admin Examination",
     ADMIN_PASS: "SuperSecretKey123"
 };
 
-// --- MAIN FUNCTIONS ---
-
-/**
- * Toggles the password input type between 'password' and 'text'.
- * Changes the eye icon accordingly.
- */
+// ===============================
+// SHOW / HIDE PASSWORD HANDLER
+// ===============================
 function togglePasswordVisibility() {
-    const passwordField = document.getElementById('password');
-    const toggleIcon = document.getElementById('toggleIcon');
-    
-    // Check input type
-    if (passwordField.type === 'password') {
-        passwordField.type = 'text'; // Change to text (Show)
-        toggleIcon.classList.remove('fa-eye');
-        toggleIcon.classList.add('fa-eye-slash'); // Change icon to closed eye
+    const passwordField = document.getElementById("password");
+    const toggleIcon = document.getElementById("toggleIcon");
+
+    if (passwordField.type === "password") {
+        passwordField.type = "text";
+        toggleIcon.classList.replace("fa-eye", "fa-eye-slash");
     } else {
-        passwordField.type = 'password'; // Change back to password (Hide)
-        toggleIcon.classList.remove('fa-eye-slash');
-        toggleIcon.classList.add('fa-eye'); // Change icon to open eye
+        passwordField.type = "password";
+        toggleIcon.classList.replace("fa-eye-slash", "fa-eye");
     }
 }
 
-/**
- * Handles the login form submission process.
- */
-function handleLoginSubmit(event) {
-    event.preventDefault(); // Prevents page reload by default
-    
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
-    const messageElement = document.getElementById('message');
-    
-    // Determine the current mode: true if admin, false if participant
-    let is_admin_mode = document.querySelector('.login-box').classList.contains('admin-mode');
-    
-    messageElement.textContent = ''; // Reset message
-    messageElement.style.color = 'red'; // Default error message color
+// =====================================
+// TOGGLE ADMIN LOGIN MODE
+// =====================================
+function handleAdminToggle() {
+    const loginBox = document.querySelector(".login-box");
+    const title = document.getElementById("login-title");
+    const toggleBtn = document.getElementById("admin-toggle");
 
-    let loginSuccessful = false;
-    let successMessage = '';
+    loginBox.classList.toggle("admin-mode");
 
-    if (is_admin_mode) {
-        // Admin Login Logic
-        if (username === CREDENTIALS.ADMIN_USER && password === CREDENTIALS.ADMIN_PASS) {
-            loginSuccessful = true;
-            successMessage = 'Login Successful as Administrator!';
-        } else {
-            messageElement.textContent = 'Failed! Invalid Admin Credentials.';
-        }
+    if (loginBox.classList.contains("admin-mode")) {
+        title.textContent = "Administrator Login";
+        toggleBtn.textContent = "Switch to Participant Login";
     } else {
-        // Participant Login Logic
-        if (username === CREDENTIALS.PARTICIPANT_USER && password === CREDENTIALS.PARTICIPANT_PASS) {
-            loginSuccessful = true;
-            successMessage = `Login Successful! Welcome, ${username}.`;
-            redirectPage = '../welcome/welcome.html'; // <<< KOREKSI UTAMA: Arahkan ke welcome.html
+        title.textContent = "Participant Login";
+        toggleBtn.textContent = "Switch to Admin Login";
+    }
+}
+
+// ===============================================
+// MAIN LOGIN FUNCTION (PARTICIPANT + ADMIN)
+// ===============================================
+async function handleLoginSubmit(event) {
+    event.preventDefault();
+
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const messageElement = document.getElementById("message");
+
+    messageElement.textContent = "";
+    messageElement.style.color = "red";
+
+    const isAdminMode = document.querySelector(".login-box").classList.contains("admin-mode");
+
+    // ===============================
+    // ADMIN LOGIN CHECK
+    // ===============================
+    if (isAdminMode) {
+        if (username === CREDENTIALS.ADMIN_USER && password === CREDENTIALS.ADMIN_PASS) {
+            messageElement.style.color = "green";
+            messageElement.textContent = "Login Successful as Administrator!";
+            setTimeout(() => window.location.href = "../welcome/welcome.html", 1500);
         } else {
-            messageElement.textContent = 'Failed! Invalid Full Name or Password.';
+            messageElement.textContent = "Invalid Admin Credentials!";
         }
+        return;
     }
 
-    if (loginSuccessful) {
-        messageElement.textContent = successMessage;
-        messageElement.style.color = 'green';
-        
-        // Redirect setelah success
+    // ===============================
+    // PARTICIPANT LOGIN (FIRESTORE)
+    // ===============================
+
+    const userRef = db.collection("participants").doc(username);
+
+    try {
+        const docSnap = await userRef.get();
+
+        if (!docSnap.exists) {
+            messageElement.textContent = "User not found!";
+            return;
+        }
+
+        const userData = docSnap.data();
+
+        if (userData.password !== password) {
+            messageElement.textContent = "Incorrect password!";
+            return;
+        }
+
+        const currentAttempts = userData.login_attempts || 0;
+
+        if (currentAttempts >= 2) {
+            messageElement.textContent = `Access Denied! Login limit reached (${currentAttempts}/2).`;
+            return;
+        }
+
+        // UPDATE LOGIN ATTEMPTS
+        await userRef.set({
+            login_attempts: currentAttempts + 1,
+            last_login: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge: true });
+
+        // SUCCESS
+        messageElement.style.color = "green";
+        messageElement.textContent = `Login Successful! Welcome, ${username}.`;
+
         setTimeout(() => {
-            // alert(successMessage + ' Redirecting...'); // Hilangkan alert jika tidak diperlukan
-            window.location.href = redirectPage; // Lakukan pengalihan
+            window.location.href = "../welcome/welcome.html";
         }, 1500);
 
-    } else {
-        // Clear error message after 5 seconds
-        setTimeout(() => {
-            messageElement.textContent = '';
-        }, 5000);
+    } catch (error) {
+        console.error("Firestore Error:", error);
+        messageElement.textContent = "Login error — cannot connect to server!";
     }
 }
-
-
-/**
- * Handles the mode change between Participant and Administrator (Requires 'admin-toggle' button in HTML).
- */
-function handleAdminToggle() {
-    const loginBox = document.querySelector('.login-box');
-    const titleElement = document.querySelector('h2');
-    const toggleButton = document.getElementById('admin-toggle'); 
-    
-    // Toggle 'admin-mode' class
-    loginBox.classList.toggle('admin-mode');
-    
-    if (loginBox.classList.contains('admin-mode')) {
-        titleElement.textContent = 'Administrator Login';
-        if(toggleButton) {
-             toggleButton.textContent = 'Admin Mode: ON';
-             toggleButton.classList.add('admin-active');
-        }
-    } else {
-        titleElement.textContent = 'Participant Login';
-        if(toggleButton) {
-            toggleButton.textContent = 'Admin Mode: OFF';
-            toggleButton.classList.remove('admin-active');
-        }
-    }
-}
-
-
-// --- MAIN EXECUTION BLOCK (Setting up Event Listeners) ---
-document.addEventListener('DOMContentLoaded', function() {
-    // 1. Event Listener for Form Submit (Login)
-    document.getElementById('login-form').addEventListener('submit', handleLoginSubmit);
-
-    // 2. Event Listener for Admin Toggle 
-    const adminToggleElement = document.getElementById('admin-toggle');
-    if (adminToggleElement) {
-        adminToggleElement.addEventListener('click', handleAdminToggle);
-    }
-});
