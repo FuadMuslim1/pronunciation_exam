@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Examination - Stage 1</title>
+    <link rel="stylesheet" href="stage_1.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Stage 1: Tongue Twister</h1>
+        
+        <div class="recording-status">
+            <div id="timer">01:00</div> 
+            <p id="status-message">Initializing media and starting recording...</p>
+        </div>
+
+        <div class="media-area">
+            <video id="camera-preview" autoplay muted></video>
+            
+            <div class="tongue-twister-box">
+                <p class="twister-text">
+                    Peter Piper picked a peck of pickled peppers. A peck of pickled peppers Peter Piper picked. If Peter Piper picked a peck of pickled peppers, Where’s the peck of pickled peppers Peter Piper picked?
+                </p>
+            </div>
+        </div>
+
+        <button id="next-button" disabled>
+            Next
+        </button>
+    </div>
+    
+    <script src="stage_1.js"></script>
+</body>
+</html>

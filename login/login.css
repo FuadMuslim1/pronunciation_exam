@@ -1,0 +1,267 @@
+/* Import font modern */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+:root {
+    --primary-color: #4A90E2; /* Biru muda cerah */
+    --secondary-color: #FF5733; /* Warna aksen/Admin */
+    --background-color: #f0f2f5;
+    --card-background: #ffffff;
+    --text-color: #333333;
+    --shadow-light: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--background-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden; /* Agar tidak ada scrollbar */
+    position: relative;
+}
+
+/* Efek latar belakang modern */
+body::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    left: -50px;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle at top left, var(--primary-color) 0%, transparent 40%),
+                radial-gradient(circle at bottom right, #50C878 0%, transparent 40%); /* Hijau emerald */
+    opacity: 0.1;
+    z-index: -1;
+}
+
+.login-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    position: relative;
+}
+
+.login-box {
+    background-color: var(--card-background);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: var(--shadow-light);
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+}
+
+.login-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.15);
+}
+
+h1 {
+    color: var(--primary-color);
+    margin-bottom: 5px;
+    font-size: 2.2em;
+    font-weight: 700;
+}
+
+h2 {
+    color: var(--text-color);
+    margin-bottom: 25px;
+    font-size: 1.2em;
+    font-weight: 400;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-color);
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+input[type="text"], 
+input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 1em;
+    transition: all 0.3s ease;
+    background-color: var(--background-color);
+}
+
+input[type="text"]:focus, 
+input[type="password"]:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+    outline: none;
+    background-color: var(--card-background);
+}
+
+.password-group {
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 15px;
+    top: 65%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #999;
+    transition: color 0.2s;
+}
+
+.password-toggle:hover {
+    color: var(--primary-color);
+}
+
+.login-button {
+    width: 100%;
+    padding: 15px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.1s;
+    margin-top: 10px;
+    letter-spacing: 0.5px;
+}
+
+.login-button:hover {
+    background-color: #3a7acb;
+    transform: translateY(-2px);
+}
+
+.login-button:active {
+    transform: translateY(0);
+}
+
+/* Tombol Admin Mode */
+.mode-toggle {
+    position: absolute;
+    top: -40px;
+    right: 0;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.85em;
+}
+
+#admin-toggle {
+    background-color: #e0e0e0;
+    color: var(--text-color);
+}
+
+#admin-toggle.admin-active {
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+/* Gaya untuk Admin Mode */
+.login-box.admin-mode {
+    border: 3px solid var(--secondary-color);
+    box-shadow: 0 10px 40px rgba(255, 87, 51, 0.3);
+}
+
+.login-box.admin-mode h1 {
+    color: var(--secondary-color);
+}
+
+.login-box.admin-mode .login-button {
+    background-color: var(--secondary-color);
+}
+
+.login-box.admin-mode .login-button:hover {
+    background-color: #cc4527;
+}
+
+/* Contoh Kredensial */
+.credentials-example {
+    margin-top: 25px;
+    padding: 15px;
+    background-color: #e9ecef;
+    border-radius: 10px;
+    font-size: 0.9em;
+    text-align: left;
+    color: #6c757d;
+}
+
+.credentials-example h3 {
+    margin-top: 0;
+    font-size: 1em;
+    color: #495057;
+    border-bottom: 1px solid #ced4da;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+.credentials-example table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.credentials-example td {
+    padding: 2px 0;
+}
+
+/* Gaya untuk Link Admin Login yang baru */
+.mode-link {
+    position: absolute;
+    top: -40px; 
+    right: 0; 
+    padding: 8px 15px;
+    background-color: #f0f0f0; /* Warna dasar */
+    color: var(--primary-color); 
+    border-radius: 5px;
+    font-weight: 600;
+    text-decoration: none; /* Hilangkan garis bawah default */
+    transition: all 0.3s ease;
+    font-size: 0.85em;
+    border: 1px solid #ccc;
+}
+
+.mode-link:hover {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+/* Tambahkan ini ke file style.css Anda */
+#message {
+    text-align: center;
+    margin-top: 15px;
+    font-weight: bold;
+    /* Font size dan padding bisa disesuaikan */
+    padding: 10px;
+}
+
+/* Jika Anda ingin pesan error memiliki latar belakang */
+#message[style*="color: red"] {
+    background-color: #ffeaea; /* Latar belakang merah muda ringan untuk error */
+    border-radius: 4px;
+    border: 1px solid #ff9d9d;
+}
+
+/* Jika Anda ingin pesan sukses memiliki latar belakang */
+#message[style*="color: green"] {
+    background-color: #eaf8e9; /* Latar belakang hijau muda ringan untuk sukses */
+    border-radius: 4px;
+    border: 1px solid #9dff9d;
+}

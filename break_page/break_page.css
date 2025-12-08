@@ -1,0 +1,98 @@
+/* style.css (Tambahan untuk Break Page) */
+
+/* (Asumsi gaya body dan .container sudah ada dari halaman sebelumnya) */
+
+.break-rules {
+    text-align: left;
+    margin: 30px auto;
+    border: 1px solid #007bff; /* Border biru yang menenangkan */
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #e6f7ff; /* Latar belakang biru muda */
+    max-width: 600px;
+}
+.break-rules h3 {
+    color: #007bff;
+    border-bottom: 1px solid #007bff;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+.break-rules ul {
+    list-style-type: none; 
+    padding-left: 0;
+}
+.break-rules li {
+    margin-bottom: 10px;
+    padding-left: 25px;
+    position: relative;
+}
+/* Menambahkan simbol panah untuk list */
+.break-rules li::before {
+    content: '→'; 
+    color: #28a745;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+    position: absolute;
+    left: 0;
+}
+
+.ready-message {
+    margin-top: 30px;
+    font-size: 1.1em;
+    font-style: italic;
+    color: #555;
+}
+
+#start-stage2-button {
+    padding: 15px 40px;
+    font-size: 1.3em;
+    background-color: #28a745; /* Warna hijau untuk Lanjut/Start */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+#start-stage2-button:hover {
+    background-color: #218838;
+}
+/* style.css */
+
+/* Tambahkan jarak di bawah sub-heading */
+h2 {
+    margin-bottom: 40px; 
+}
+
+/* Beri jarak yang lebih konsisten di sekitar kotak aturan */
+.break-rules {
+    margin: 30px auto 30px auto;
+}
+/* style.css */
+
+/* Pusatkan semua teks dalam container kecuali item spesifik */
+.container {
+    /* ... properti container lainnya ... */
+    text-align: center; /* Pastikan semua elemen inline/inline-block dipusatkan */
+}
+
+/* Pastikan Heading dan Subheading rata tengah */
+h1, h2 {
+    text-align: center;
+}
+
+/* Pusatkan pesan di bagian bawah */
+.ready-message {
+    text-align: center; /* Ubah dari left-aligned */
+    /* ... properti lainnya ... */
+}
+/* style.css */
+
+#start-stage2-button {
+    /* ... properti tombol lainnya ... */
+    display: block; /* Tombol menjadi elemen block */
+    margin: 30px auto 0 auto; /* Memberi jarak vertikal dan memusatkan secara horizontal */
+    width: 250px; /* Atur lebar agar terlihat lebih proporsional */
+}

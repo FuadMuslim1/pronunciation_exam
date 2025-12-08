@@ -1,0 +1,76 @@
+/* style.css */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f4f4f4;
+    margin: 0;
+}
+.container {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    width: 90%;
+    text-align: center;
+}
+h1 {
+    color: #007bff;
+    margin-bottom: 20px;
+}
+.rules {
+    text-align: left;
+    margin-bottom: 25px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+    background-color: #fafafa;
+}
+.rules h3 {
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+.rules ul {
+    list-style-type: disc;
+    padding-left: 20px;
+}
+.rules li {
+    margin-bottom: 8px;
+}
+#access-status {
+    margin: 20px 0;
+    font-weight: bold;
+}
+#start-button {
+    padding: 15px 30px;
+    font-size: 1.2em;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+#start-button:hover {
+    background-color: #218838;
+}
+#start-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+.media-preview {
+    margin-top: 15px;
+    display: none; /* Sembunyikan secara default */
+    justify-content: center;
+}
+#camera-preview {
+    width: 150px;
+    height: 112px;
+    background-color: #333;
+    border: 1px solid #007bff;
+    border-radius: 5px;
+}

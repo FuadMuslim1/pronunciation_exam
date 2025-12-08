@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Examination - Welcome</title>
+    <link rel="stylesheet" href="welcome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Welcome to The Examination</h1>
+        <h2>Before You Start</h2>
+
+        <div class="rules">
+            <h3>Examination Rules:</h3>
+            <ul>
+                <li>Do not leave the camera's view during the examination!</li>
+                <li>Microphone must remain active for the entire duration of the test.</li>
+                <li>No talking, looking away frequently, or receiving assistance.</li>
+                <li>Ensure you have a stable internet connection.</li>
+                <li>There are 3 stages on this examination; Tongue Twisters, Phonetic Transcription, and Text.</li>
+                <li>One minute for each stage.</li>
+                <li>You can go to the next stage by clicking the "Next Stage" button or when the timer runs out.</li>
+                <li>Pray before you start.</li>
+            </ul>
+        </div>
+        
+        <p id="access-status" style="color: gray;">
+            <i class="fas fa-spinner fa-spin"></i> Checking Camera and Microphone access...
+        </p>
+
+        <div class="media-preview">
+            <video id="camera-preview" autoplay muted></video>
+        </div>
+
+        <button id="start-button" disabled>
+            Start Exam
+        </button>
+    </div>
+    
+    <script src="welcome.js"></script>
+</body>
+</html>
