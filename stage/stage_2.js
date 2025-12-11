@@ -1,5 +1,3 @@
-// stage2.js
-
 const cameraPreview = document.getElementById('camera-preview');
 const nextButton = document.getElementById('next-button');
 const statusMessage = document.getElementById('status-message');
@@ -7,17 +5,15 @@ const timerDisplay = document.getElementById('timer');
 
 let mediaRecorder;
 let mediaStream = null;
-let recordedChunks = []; // Dibiarkan sebagai global
+let recordedChunks = []; 
 let timerInterval;
 
 const DB_NAME = 'ExamRecordsDB';
 const STORE_NAME = 'videos';
-// KONSTANTA: Dipastikan untuk Stage 2
 const RECORD_KEY = 'stage_2_video';
 const DURATION_SECONDS = 60; // 1 menit
 
 // --- IndexedDB Setup ---
-
 function openDatabase() {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open(DB_NAME, 1);
@@ -40,6 +36,33 @@ function openDatabase() {
     });
 }
 
+// --- Hapus rekaman sebelumnya ---
+async function deleteRecording() {
+    try {
+        const db = await openDatabase();
+        const transaction = db.transaction(STORE_NAME, 'readwrite');
+        const store = transaction.objectStore(STORE_NAME);
+
+        const request = store.delete(RECORD_KEY);
+
+        return new Promise((resolve, reject) => {
+            request.onsuccess = () => {
+                console.log("Previous Stage 2 recording deleted.");
+                resolve(true);
+            };
+            request.onerror = () => {
+                console.warn("Failed to delete previous Stage 2 recording.");
+                reject(false);
+            };
+        });
+
+    } catch (error) {
+        console.error("Delete operation failed:", error);
+        return false;
+    }
+}
+
+// --- Simpan rekaman ---
 async function saveRecording(blob) {
     let db;
     try {
@@ -51,24 +74,23 @@ async function saveRecording(blob) {
 
         return new Promise((resolve, reject) => {
             request.onsuccess = () => {
-                db.close(); // ✨ Tutup DB
+                db.close();
                 resolve('Video saved successfully!');
-            }
+            };
             request.onerror = () => {
-                db.close(); // ✨ Tutup DB
+                db.close();
                 reject('Failed to save video to DB.');
-            }
+            };
         });
 
     } catch (error) {
-        if (db) db.close(); // ✨ Tutup DB jika gagal di awal
+        if (db) db.close();
         console.error("Error during DB operation:", error);
         return Promise.reject('Database operation failed.');
     }
 }
 
 // --- Timer Control ---
-
 function startTimer() {
     let timeLeft = DURATION_SECONDS;
 
@@ -86,19 +108,14 @@ function startTimer() {
         if (timeLeft <= 0) {
             clearInterval(timerInterval);
             timerDisplay.textContent = 'TIME UP';
-
             stopRecordingAndProceed();
         }
     }, 1000);
 }
 
 // --- Recording Control ---
-
 async function startRecording() {
-    // Media access (kamera dan mikrofon)
     try {
-        // recordedChunks TIDAK direset karena ini single-use page.
-
         mediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
         cameraPreview.srcObject = mediaStream;
 
@@ -112,7 +129,6 @@ async function startRecording() {
 
         mediaRecorder.onstop = async () => {
             statusMessage.textContent = 'Saving recording... Please wait.';
-
             clearInterval(timerInterval);
 
             if (mediaStream) {
@@ -120,8 +136,6 @@ async function startRecording() {
             }
 
             const blob = new Blob(recordedChunks, { type: 'video/webm' });
-
-            // Navigasi yang diharapkan setelah Stage 2
             const nextUrl = '../break_page/break_page_1.html';
 
             try {
@@ -154,12 +168,10 @@ async function startRecording() {
 }
 
 function stopRecordingAndProceed() {
-    // Navigasi yang diharapkan setelah Stage 2
     const nextUrl = '../break_page/break_page_1.html';
 
     if (mediaRecorder && mediaRecorder.state === 'recording') {
         mediaRecorder.stop();
-
         nextButton.disabled = true;
         nextButton.textContent = 'Processing...';
     } else if (mediaRecorder && mediaRecorder.state !== 'inactive') {
@@ -171,6 +183,9 @@ function stopRecordingAndProceed() {
 }
 
 // --- Initialization ---
+window.onload = async () => {
+    await deleteRecording(); // Hapus rekaman lama Stage 2
+    startRecording();
+};
 
-window.onload = startRecording;
 nextButton.addEventListener('click', stopRecordingAndProceed);

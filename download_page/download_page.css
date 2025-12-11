@@ -1,31 +1,29 @@
-/* download_page.css (Versi Perbaikan Tata Letak) */
-
 /* 1. Reset Dasar & Kontainer Tengah */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f9; /* Warna latar belakang lembut */
+    background-color: #f4f4f9;
     color: #333;
     line-height: 1.6;
     margin: 0;
     padding: 0;
-    display: flex; /* Untuk pemusatan vertikal/horizontal */
+    display: flex;
     justify-content: center;
-    align-items: flex-start; /* Konten dimulai dari atas */
+    align-items: flex-start;
     min-height: 100vh;
     padding-top: 50px;
 }
 
 .container {
     width: 90%;
-    max-width: 800px; /* Batasi lebar maksimum */
+    max-width: 800px;
     background-color: #ffffff;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    text-align: center; /* Pusatkan teks utama */
+    text-align: center;
 }
 
-/* 2. Styling Header dan Pesan Akhir */
+/* Header & Pesan Akhir */
 h1 {
     color: #28a745 !important;
     font-size: 2.5em;
@@ -37,7 +35,6 @@ h2 {
     margin-top: 0;
     margin-bottom: 30px;
 }
-
 .final-message {
     font-size: 1.1em;
     margin: 25px auto;
@@ -45,35 +42,34 @@ h2 {
     color: #333;
 }
 
-/* 3. Download Area */
+/* Download Area */
 .download-area {
     margin-top: 40px;
     padding: 30px;
     border: 1px solid #ddd;
     border-radius: 8px;
     background-color: #f9f9f9;
-    text-align: left; /* Teks di dalam area download diratakan ke kiri */
+    text-align: left;
 }
 .download-area h3 {
     color: #007bff;
     border-bottom: 2px solid #e9ecef;
     padding-bottom: 10px;
     margin-bottom: 20px;
-    text-align: center; /* Judul area download tetap di tengah */
+    text-align: center;
     font-size: 1.4em;
 }
 
-/* 4. Download Buttons (Dibuat lebih rapi dan terpusat) */
+/* Download Buttons */
 .download-list {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Pusatkan semua tombol */
-    gap: 15px; /* Jarak antar tombol */
+    align-items: center;
+    gap: 15px;
 }
 .download-list button {
-    width: 90%; /* Tombol lebih lebar */
-    max-width: 450px; /* Batas lebar tombol */
-    margin: 0; /* Hapus margin auto yang lama */
+    width: 90%;
+    max-width: 450px;
     padding: 15px 20px;
     font-size: 1.1em;
     font-weight: bold;
@@ -97,7 +93,7 @@ h2 {
     color: #555;
 }
 
-/* 5. Warning Message */
+/* Warning Message */
 .warning-message {
     margin-top: 30px;
     padding: 10px;
@@ -111,7 +107,7 @@ h2 {
     margin-right: auto;
 }
 
-/* Penambahan styling untuk Instructions Area (jika menggunakan versi Inggris) */
+/* Instructions Area */
 .instructions-area {
     margin-top: 40px;
     padding: 25px;
@@ -133,4 +129,15 @@ h2 {
 .instructions-area li {
     margin-bottom: 10px;
     font-size: 1.05em;
+}
+
+/* Responsif Mobile */
+@media (max-width: 500px) {
+    .container {
+        padding: 20px;
+    }
+    .download-list button {
+        font-size: 1em;
+        padding: 12px 15px;
+    }
 }

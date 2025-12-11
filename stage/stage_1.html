@@ -4,34 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Examination - Stage 1</title>
+
+    <!-- Styles -->
     <link rel="stylesheet" href="stage_1.css">
+
+    <!-- Authentication + Logic -->
     <script src="auth.js" defer></script>
+    <script src="stage_1.js" defer></script>
+    <script src="../mobile_friendly.js" defer></script>
 </head>
 <body>
-
     <div class="container">
-        <h1>Stage 1: Tongue Twister</h1>
-        
-        <div class="recording-status">
-            <div id="timer">01:00</div> 
+
+        <!-- Header -->
+        <header class="page-header">
+            <h1>Stage 1: Tongue Twister</h1>
+        </header>
+
+        <!-- Recording Status -->
+        <section class="recording-status">
+            <div id="timer">01:00</div>
             <p id="status-message">Initializing media and starting recording...</p>
-        </div>
+        </section>
 
-        <div class="media-area">
+        <!-- Media Area -->
+        <section class="media-area">
             <video id="camera-preview" autoplay muted></video>
-            
-            <div class="tongue-twister-box">
-                <p class="twister-text">
-                    Peter Piper picked a peck of pickled peppers. A peck of pickled peppers Peter Piper picked. If Peter Piper picked a peck of pickled peppers, Where’s the peck of pickled peppers Peter Piper picked?
-                </p>
-            </div>
-        </div>
+        </section>
 
-        <button id="next-button" disabled>
-            Next
-        </button>
+        <!-- Tongue Twister Box -->
+        <section class="tongue-twister-box">
+            <p class="twister-text">
+                Betty Botter bought some butter<br>
+                But she said "the butter's bitter,“<br>
+                If I put it in my batter<br>
+                It will make my batter bitter,<br>
+                But a bit of better butter<br>
+                Will make my batter better.”<br>
+                So it was better<br>
+                Betty Botter bought a bit of better butter
+            </p>
+        </section>
+
+        <!-- Next Button -->
+        <button id="next-button" disabled>Next</button>
+
     </div>
-    
-    <script src="stage_1.js"></script>
 </body>
 </html>

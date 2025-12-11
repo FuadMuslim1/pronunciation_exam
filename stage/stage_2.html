@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Examination - Stage 1</title>
+    <title>The Examination - Stage 2</title>
     <link rel="stylesheet" href="stage_2.css">
     <script src="auth.js" defer></script>
 </head>
@@ -12,28 +12,43 @@
     <div class="container">
         <h1>Stage 2: Phonetic Transcription</h1>
         
+        <!-- Status & Timer -->
         <div class="recording-status">
             <div id="timer">01:00</div> 
             <p id="status-message">Initializing media and starting recording...</p>
         </div>
 
+        <!-- Area Media + Text -->
         <div class="media-area">
             <video id="camera-preview" autoplay muted></video>
             
             <div class="tongue-twister-box">
                 <p class="twister-text">
-                    aɪv wɜrkt hɑrd ðiz pæst mʌnθs, ænd ɪts peɪd ɔf. ˈsʌmˌtaɪmz aɪ skroʊl ði ˈɪntərˌnɛt tu mʌʧ, bʌt aɪ doʊnt ˈɔfən rɛst-aɪ ʤʌst kip ˈɡoʊɪŋ kəz aɪ doʊnt ˈwɑnə kwɪt. maɪ frɛndz sɛd ɪts nɑt ˈizi, bʌt ðæts wʌt meɪks ɪt wɜrθ ɪt. wɛn aɪ ɡɛt ˈtaɪərd, aɪ 
-                    ʤʌst riˈmaɪnd ˌmaɪˈsɛlf-ɪts ɔl pɑrt ʌv maɪ drim.
+                    sæmz kwɪk ˈɪŋɡlɪʃ tɪps
 
+sæm ˈwɔntɪd tu lɜrn ˈɪŋɡlɪʃ fæst, soʊ hi ˈfɑloʊd ə fju tɪps hɪz ˈtiʧər 
+səɡˈʤɛstɪd.
+
+fɜrst, hi ˈpræktɪst ˈɛndɪŋ saʊndz. hi rid wɜrdz laɪk bʊks, ˈlɛsənz, ænd 
+frɛndz, ænd ˈnoʊtəst ðæt ðə ˈlɪtəl “ɛs” saʊnd meɪd hɪz spiʧ ˈklɪrər. ðɛn hi traɪd pæst tɛns. hi sɛd wɜrkt, pleɪd, ænd ˈwɔntɪd. hi ˈriəˌlaɪzd “-
+i di” ˈɛndɪŋz ˈsaʊndɪd ˈdɪfrənt bʌt stɪl ˈmætərd.
+
+hɪz ˈtiʧər sɛd, “doʊnt ˈwɜri, ɪt ɡɛts ˈiziər wɛn ju ˈlɪsən.”
+
+sæm ˈɔlsoʊ lɜrnd əˈbaʊt ði əˈmɛrɪkən ti. hi ˈnoʊtəst haʊ ˈwɔtər, ˈbɛtər, ænd ˈsɪti ˈsaʊndɪd ˈsɔftər, ˈɔlˌmoʊst laɪk “dəh.” hi ˈstɑrtɪd ˈlɪŋkɪŋ ʌp wɜrdz: ˈɡoʊɪŋ tu rid ɪt, wɑnt tu traɪ ɪt.
+
+hi toʊld hɪmˈsɛlf, “aɪm nɑt ˈɡoʊɪŋ tu kwɪt. aɪl kip ˈpræktəsɪŋ ˈɛvri deɪ.”
+
+ænd ˈlɪtəl baɪ ˈlɪtəl, sæmz ˈɪŋɡlɪʃ skɪlz ɪmˈpruvd-hi wɑʧt ʃoʊz, æskt ˈkwɛsʧənz, ænd smaɪld wɛn ˈpipəl sɛd, “heɪ, ju saʊnd ˈbɛtər naʊ!”
                 </p>
             </div>
         </div>
 
-        <button id="next-button" disabled>
-            Next
-        </button>
+        <!-- Tombol Next -->
+        <button id="next-button" disabled>Next</button>
     </div>
     
     <script src="stage_2.js"></script>
+    <script src="mobile_friendly.js" defer></script>
 </body>
 </html>

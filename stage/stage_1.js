@@ -1,5 +1,3 @@
-// stage1.js
-
 const cameraPreview = document.getElementById('camera-preview');
 const nextButton = document.getElementById('next-button');
 const statusMessage = document.getElementById('status-message');
@@ -16,7 +14,6 @@ const RECORD_KEY = 'stage_1_video';
 const DURATION_SECONDS = 60; // 1 menit
 
 // --- IndexedDB Setup ---
-
 function openDatabase() {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open(DB_NAME, 1);
@@ -39,13 +36,39 @@ function openDatabase() {
     });
 }
 
+// --- Hapus rekaman sebelumnya ---
+async function deleteRecording() {
+    try {
+        const db = await openDatabase();
+        const transaction = db.transaction(STORE_NAME, 'readwrite');
+        const store = transaction.objectStore(STORE_NAME);
+
+        const request = store.delete(RECORD_KEY);
+
+        return new Promise((resolve, reject) => {
+            request.onsuccess = () => {
+                console.log("Previous recording deleted.");
+                resolve(true);
+            };
+            request.onerror = () => {
+                console.warn("Failed to delete previous recording.");
+                reject(false);
+            };
+        });
+
+    } catch (error) {
+        console.error("Delete operation failed:", error);
+        return false;
+    }
+}
+
+// --- Simpan rekaman ---
 async function saveRecording(blob) {
     try {
         const db = await openDatabase();
         const transaction = db.transaction(STORE_NAME, 'readwrite');
         const store = transaction.objectStore(STORE_NAME);
 
-        // Simpan Blob video ke IndexedDB dengan kunci unik
         const request = store.put(blob, RECORD_KEY);
 
         return new Promise((resolve, reject) => {
@@ -60,11 +83,9 @@ async function saveRecording(blob) {
 }
 
 // --- Timer Control ---
-
 function startTimer() {
     let timeLeft = DURATION_SECONDS;
     
-    // Tampilkan waktu awal (01:00)
     const initialMinutes = Math.floor(timeLeft / 60);
     const initialSeconds = timeLeft % 60;
     timerDisplay.textContent = `${initialMinutes.toString().padStart(2, '0')}:${initialSeconds.toString().padStart(2, '0')}`;
@@ -79,17 +100,13 @@ function startTimer() {
         if (timeLeft <= 0) {
             clearInterval(timerInterval);
             timerDisplay.textContent = 'TIME UP';
-            
-            // Otomatis stop dan pindah halaman
             stopRecordingAndProceed(); 
         }
     }, 1000);
 }
 
 // --- Recording Control ---
-
 async function startRecording() {
-    // Media access (kamera dan mikrofon)
     try {
         mediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
         cameraPreview.srcObject = mediaStream;
@@ -104,11 +121,8 @@ async function startRecording() {
 
         mediaRecorder.onstop = async () => {
             statusMessage.textContent = 'Saving recording... Please wait.';
-            
-            // Pastikan timer dihentikan jika dihentikan secara manual/otomatis
             clearInterval(timerInterval); 
 
-            // Hentikan stream perangkat keras (kamera/mikrofon)
             if (mediaStream) {
                 mediaStream.getTracks().forEach(track => track.stop());
             }
@@ -119,24 +133,21 @@ async function startRecording() {
                 await saveRecording(blob);
                 statusMessage.textContent = 'Recording saved. Redirecting to break page...';
                 
-                // Pindah ke halaman istirahat
                 setTimeout(() => {
                     window.location.href = '../break_page/break_page.html';
-                }, 1000); // Tunda sebentar untuk pesan konfirmasi
+                }, 1000);
                 
             } catch (error) {
                 statusMessage.textContent = 'ERROR: Failed to save video. Redirecting anyway.';
                 console.error(error);
-                // Tetap pindah halaman meskipun gagal simpan
                 setTimeout(() => {
                     window.location.href = '../break_page/break_page.html';
                 }, 2000); 
             }
         };
 
-        // Mulai merekam dan timer
         mediaRecorder.start();
-        startTimer(); // Mulai timer 60 detik
+        startTimer();
         statusMessage.textContent = 'Recording is ACTIVE (Border RED). Start reading now.';
         nextButton.disabled = false;
 
@@ -150,21 +161,20 @@ async function startRecording() {
 function stopRecordingAndProceed() {
     if (mediaRecorder && mediaRecorder.state === 'recording') {
         mediaRecorder.stop(); 
-        
-        // Nonaktifkan tombol untuk mencegah klik ganda selama proses penyimpanan
         nextButton.disabled = true; 
         nextButton.textContent = 'Processing...';
     } else if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-        // Ini menangani kasus jika mediaRecorder.stop() sudah dipanggil tetapi onstop belum selesai.
         nextButton.disabled = true; 
         nextButton.textContent = 'Processing...';
     } else {
-        // Jika rekaman sudah berhenti (misal karena error atau sudah selesai), langsung navigasi
         window.location.href = 'break_page.html'; 
     }
 }
 
 // --- Initialization ---
+window.onload = async () => {
+    await deleteRecording();   // Hapus file rekaman lama
+    startRecording();           // Mulai rekaman baru
+};
 
-window.onload = startRecording; // Mulai merekam dan timer secara otomatis
 nextButton.addEventListener('click', stopRecordingAndProceed);

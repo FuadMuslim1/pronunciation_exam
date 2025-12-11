@@ -4,16 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Examination - Welcome</title>
+    
+    <!-- CSS -->
     <link rel="stylesheet" href="welcome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <!-- SCRIPT AUTHENTICATION -->
     <script src="auth.js" defer></script>
 </head>
 <body>
 
+    <!-- CONTAINER UTAMA -->
     <div class="container">
         <h1>Welcome to The Examination</h1>
         <h2>Before You Start</h2>
 
+        <!-- RULES -->
         <div class="rules">
             <h3>Examination Rules:</h3>
             <ul>
@@ -28,19 +34,27 @@
             </ul>
         </div>
         
+        <!-- ACCESS STATUS -->
         <p id="access-status" style="color: gray;">
             <i class="fas fa-spinner fa-spin"></i> Checking Camera and Microphone access...
         </p>
 
+        <!-- MEDIA PREVIEW -->
         <div class="media-preview">
             <video id="camera-preview" autoplay muted></video>
         </div>
 
+        <!-- START BUTTON -->
         <button id="start-button" disabled>
             Start Exam
         </button>
     </div>
     
+    <!-- SCRIPT UTAMA -->
     <script src="welcome.js"></script>
+
+    <!-- Module Mobile-Friendly -->
+    <script src="../mobile_friendly.js" defer></script>
+
 </body>
 </html>

@@ -1,10 +1,12 @@
-// download_page.js
-
+// ===============================
+// Constants
+// ===============================
 const DB_NAME = 'ExamRecordsDB';
 const STORE_NAME = 'videos';
 
-// --- IndexedDB Functions ---
-
+// ===============================
+// IndexedDB Functions
+// ===============================
 function openDatabase() {
     return new Promise((resolve, reject) => {
         const request = indexedDB.open(DB_NAME, 1);
@@ -16,19 +18,16 @@ function openDatabase() {
             }
         };
 
-        request.onsuccess = (event) => {
-            resolve(event.target.result);
-        };
-
+        request.onsuccess = (event) => resolve(event.target.result);
         request.onerror = (event) => {
             console.error('Database error:', event.target.errorCode);
-            reject('A database error occurred.'); // Terjemahan: Terjadi kesalahan database.
+            reject('Terjadi kesalahan database.');
         };
     });
 }
 
 async function getRecording(key) {
-    let db; // Declared outside try
+    let db;
     try {
         db = await openDatabase();
         const transaction = db.transaction(STORE_NAME, 'readonly');
@@ -38,76 +37,69 @@ async function getRecording(key) {
 
         return new Promise((resolve, reject) => {
             request.onsuccess = (event) => {
-                db.close(); // CORRECTION: Closing DB connection after success
-                resolve(event.target.result); 
+                db.close();
+                resolve(event.target.result);
             };
             request.onerror = (event) => {
-                db.close(); // CORRECTION: Closing DB connection after failure
-                reject('Failed to retrieve recording for key: ' + key); // Terjemahan: Gagal mengambil rekaman...
+                db.close();
+                reject(`Gagal mengambil rekaman untuk key: ${key}`);
             };
         });
     } catch (error) {
-        if (db) db.close(); // CORRECTION: Ensure it closes if error before transaction
-        console.error("Error fetching data from DB:", error); // Terjemahan: Kesalahan saat mengambil data...
+        if (db) db.close();
+        console.error("Kesalahan saat mengambil data dari DB:", error);
         return null;
     }
 }
 
-// --- Download Function ---
-
+// ===============================
+// Download Button Setup
+// ===============================
 function setupDownloadButton(buttonElement, blob, key) {
-    // Using global regex replace to ensure all '_' in key are replaced
-    // stage_1_video -> Stage 1 Video
-    const stage_any = key.replace(/_/g, ' ').replace(' video', '').toUpperCase();
+    const stageName = key.replace(/_/g, ' ').replace(' video', '').toUpperCase();
 
     if (blob && blob instanceof Blob) {
-        // If Blob is found
         const url = URL.createObjectURL(blob);
-
-        buttonElement.innerHTML = `<i class="fas fa-download"></i> Download ${stage_any}`; // Terjemahan: Unduh
+        buttonElement.innerHTML = `<i class="fas fa-download"></i> Download ${stageName}`;
         buttonElement.disabled = false;
 
-        // Add event listener to initiate download
         buttonElement.addEventListener('click', () => {
             const a = document.createElement('a');
             a.href = url;
-            // File name: key_YYYY-MM-DDTHH-MM-SS.webm
             a.download = `${key}_${new Date().toISOString().slice(0, 19).replace(/[:]/g, '-')}.webm`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
-
-            // CORRECTION: Revoke URL immediately after download is initiated
             URL.revokeObjectURL(url);
         });
 
     } else {
-        // If Blob is not found
-        buttonElement.innerHTML = `<i class="fas fa-times-circle"></i> ${stage_any} (Not Found)`; // Terjemahan: Tidak Ditemukan
+        buttonElement.innerHTML = `<i class="fas fa-times-circle"></i> ${stageName} (Not Found)`;
         buttonElement.style.backgroundColor = '#dc3545';
         buttonElement.disabled = true;
     }
 }
 
-
+// ===============================
+// Load All Recordings
+// ===============================
 async function loadAllRecordings() {
     const downloadButtons = document.querySelectorAll('.download-list button');
 
-    // CORRECTION: Changing serial for...of to parallel Promise.all for performance
     const loadingPromises = Array.from(downloadButtons).map(async (button) => {
         const key = button.getAttribute('data-key');
-
         const blob = await getRecording(key);
-
         setupDownloadButton(button, blob, key);
     });
 
     try {
         await Promise.all(loadingPromises);
     } catch (error) {
-        console.error("Failed to load all recordings:", error); // Terjemahan: Gagal memuat semua rekaman
+        console.error("Gagal memuat semua rekaman:", error);
     }
 }
 
-// --- Initialization ---
+// ===============================
+// Initialization
+// ===============================
 window.onload = loadAllRecordings;

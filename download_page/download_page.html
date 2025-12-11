@@ -4,28 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Exam Finished - Download Video</title>
-    <link rel="stylesheet" href="download_page.css"> <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="download_page.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Authentication + Logic -->
     <script src="auth.js" defer></script>
+    <script src="download_page.js" defer></script>
 </head>
 <body>
-
     <div class="container">
-        <h1 style="color: #28a745;">🎉 Congratulations! Exam Completed 🎉</h1>
-        <h2>You have successfully finished all stages of the exam.</h2>
-        
-        <p class="final-message">
-            Your recording videos have been processed and saved locally in your browser's storage (IndexedDB). 
-            You can download the recording evidence for each stage below.
-        </p>
+        <!-- Header -->
+        <header>
+            <h1 style="color: #28a745;">🎉 Congratulations! Exam Completed 🎉</h1>
+            <h2>You have successfully finished all stages of the exam.</h2>
+        </header>
 
-        <div class="download-area">
+
+        <!-- Download Area -->
+        <section class="download-area">
             <h3>Download Recording Evidence</h3>
+
             <div class="download-list">
-                
+
                 <button id="download-stage_1" data-key="stage_1_video" disabled>
                     <i class="fas fa-spinner fa-spin"></i> Loading Stage 1 Video...
                 </button>
-                
+
                 <button id="download-stage_2" data-key="stage_2_video" disabled>
                     <i class="fas fa-spinner fa-spin"></i> Loading Stage 2 Video...
                 </button>
@@ -33,23 +39,23 @@
                 <button id="download-stage_3" data-key="stage_3_video" disabled>
                     <i class="fas fa-spinner fa-spin"></i> Loading Stage 3 Video...
                 </button>
-
+            
             </div>
-        </div>
-        
-        <div class="instructions-area">
+
+        </section>
+
+        <!-- Instructions -->
+        <section class="instructions-area">
             <h3>📝 Next Steps: Submission Instructions</h3>
             <ol>
-                <li>**Download the videos** using the buttons above.</li>
-                <li>**Upload the downloaded files** to Google Drive, YouTube, or any other social media platform/cloud storage.</li>
-                <li>**Send the video link(s)** to your Handsome Tutor! 😊</li>
+                <li>Download the videos using the buttons above.</li>
+                <li>Upload the downloaded files to Google Drive, YouTube, or any cloud storage platform.</li>
+                <li>Send the video link(s) to your Handsome Tutor! 😊</li>
             </ol>
-        </div>
-
-        <p class="warning-message">
-            Attention: Videos are stored locally. Clearing your browser data will delete these files.
+        </section>
+        <p class="thank-you-message">
+            Thank you for participating the examination. We appreciate your effort and time! See you on the top!
         </p>
     </div>
-    
-    <script src="download_page.js"></script>
+</body>
 </html>

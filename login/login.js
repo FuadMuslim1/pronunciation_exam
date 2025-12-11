@@ -52,18 +52,20 @@ async function handleLoginSubmit(event) {
     const messageElement = document.getElementById("message");
     const isAdminMode = document.querySelector(".login-box").classList.contains("admin-mode");
 
+    // Reset class
+    messageElement.classList.remove("error", "success");
     messageElement.textContent = "";
-    messageElement.style.color = "red";
 
     // ===============================
     // ADMIN LOGIN CHECK
     // ===============================
     if (isAdminMode) {
         if (username === CREDENTIALS.ADMIN_USER && password === CREDENTIALS.ADMIN_PASS) {
-            messageElement.style.color = "green";
+            messageElement.classList.add("success");
             messageElement.textContent = "Login Successful as Administrator!";
             setTimeout(() => window.location.href = "../welcome/welcome.html", 1500);
         } else {
+            messageElement.classList.add("error");
             messageElement.textContent = "Invalid Admin Credentials!";
         }
         return;
@@ -72,8 +74,6 @@ async function handleLoginSubmit(event) {
     // ===============================
     // PARTICIPANT LOGIN (FIRESTORE)
     // ===============================
-
-    // convert "Hilman Nur" → "hilman_nur"
     const docId = username.toLowerCase().replace(/ /g, "_");
     const participantDocRef = db.collection("participants").doc(docId);
 
@@ -81,6 +81,7 @@ async function handleLoginSubmit(event) {
         const docSnap = await participantDocRef.get();
 
         if (!docSnap.exists) {
+            messageElement.classList.add("error");
             messageElement.textContent = "User not found!";
             return;
         }
@@ -88,6 +89,7 @@ async function handleLoginSubmit(event) {
         const userData = docSnap.data();
 
         if (userData.password !== password) {
+            messageElement.classList.add("error");
             messageElement.textContent = "Incorrect password!";
             return;
         }
@@ -95,27 +97,31 @@ async function handleLoginSubmit(event) {
         const currentAttempts = userData.login_attempts || 0;
 
         if (currentAttempts >= 2) {
+            messageElement.classList.add("error");
             messageElement.textContent = `Access Denied! Login limit reached (${currentAttempts}/2).`;
             return;
         }
-
-        // ========== FIX: BUG DI SINI ==========
+        
         await participantDocRef.set({
             login_attempts: currentAttempts + 1,
             last_login: firebase.firestore.FieldValue.serverTimestamp()
         }, { merge: true });
-        // =======================================
+
+        // SET STATUS LOGIN KE localStorage
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("remainingLogin", 2);
 
         // SUCCESS
-        messageElement.style.color = "green";
+        messageElement.classList.add("success");
         messageElement.textContent = `Login Successful! Welcome, ${username}.`;
 
         setTimeout(() => {
-            window.location.href = "../welcome/welcome.html";
+            window.location.href = "../welcome/welcome.html?status=true";
         }, 1500);
 
     } catch (error) {
         console.error("Firestore Error:", error);
+        messageElement.classList.add("error");
         messageElement.textContent = "Login error — cannot connect to server!";
     }
 }
